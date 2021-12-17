@@ -27,7 +27,6 @@ const HeaderButton = (props) => (
     onPress={() => props.setActiveTab(props.text)}
   >
     <Text style={{
-      // color: props.textColor,
       color: props.activeTab === props.text ? "white" : "black",
       fontSize: 15,
       fontWeight: '900'
@@ -40,5 +39,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignSelf: 'center',
   },
+  HeaderButton:{},
+  headerButtonText:{}
   
 })
