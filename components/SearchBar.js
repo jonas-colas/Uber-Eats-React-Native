@@ -11,13 +11,13 @@ const SearchBar = () => {
       <GooglePlacesAutocomplete placeholder="Search"
         styles={{
           textInput: {
-            backgroundColor: '#eee',
+            backgroundColor: '#ccc',
             borderRadius: 20,
             fontWeight: "700",
             marginTop: 7,
           },
           textInputContainer: {
-            backgroundColor: '#eee',
+            backgroundColor: '#ccc',
             borderRadius: 50,
             flexWrap: 'row',
             alignItems: 'center',
