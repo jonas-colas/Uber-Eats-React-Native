@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
   },
   imgCat: {
     width: 50, 
-    height: 50, 
+    height: 40, 
     resizeMode: "contain",
   },
   textImg: {
