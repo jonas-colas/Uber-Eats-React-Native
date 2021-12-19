@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   FontAwesome:{
-    marginBottom: 3,
+    // marginBottom: 1,
     alignSelf: 'center',
   },
   viewTab:{
