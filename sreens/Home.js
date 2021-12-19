@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, SafeAreaView, StyleSheet, ScrollView} from 'react-native';
+import { Divider } from 'react-native-elements';
 import HeaderTabs from '../components/HeaderTabs';
+import BottomTabs from '../components/BottomTabs';
 import SearchBar from '../components/SearchBar';
 import Categories from '../components/Categories';
 import RestaurantItems from '../components/RestaurantItems';
@@ -9,10 +11,9 @@ import { yelpApiKey } from '../config';
 
 
 const Home = () => {
-  // const YELP_API_KEY = yelpApiKey;
   const [restoData, setRestoData] = useState(localRestaurants);
-  // const [city, setCity] = useState("San Francisco");
-  const [city, setCity] = useState("Miami");
+  const [city, setCity] = useState("San Francisco");
+  // const [city, setCity] = useState("Miami");
   const [activeTab, setActiveTab] = useState("Delivery");
 
   const getRestoFromYelp = async () => {
@@ -48,8 +49,10 @@ const Home = () => {
         <Categories/>
         <RestaurantItems restaurantData={restoData} />
       </ScrollView>
+      <Divider width={1} />
+      <BottomTabs />
     </SafeAreaView>
-  )
+  );
 }
 
 export default Home
