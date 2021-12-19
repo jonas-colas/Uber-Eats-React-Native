@@ -1,14 +1,20 @@
-import React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
-import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete'
-import Ionicons from 'react-native-vector-icons/Ionicons'
-import AntDesign from 'react-native-vector-icons/AntDesign'
+import React, {useState} from 'react';
+import { View, Text, StyleSheet } from 'react-native';
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import {googlePlaceApi} from '../config'
 
+const SearchBar = ({cityHandler}) => {
 
-const SearchBar = () => {
   return (
     <View style={styles.searchBar}> 
       <GooglePlacesAutocomplete placeholder="Search"
+        query={{key: googlePlaceApi}}
+        onPress={(data, details = null) => {
+          const city = data.description.split(',')[0];
+          cityHandler(city)
+        }}
         styles={{
           textInput: {
             backgroundColor: '#ccc',
@@ -25,7 +31,7 @@ const SearchBar = () => {
           },
         }}
         renderLeftButton={() => (
-          <View style={{marginLeft: 10}}>
+          <View style={{marginLeft: 10}} >
             <Ionicons name="location-sharp" size={24}/>
           </View>
         )} 
