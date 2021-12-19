@@ -1,29 +1,37 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, SafeAreaView, StyleSheet, ScrollView} from 'react-native';
 import HeaderTabs from '../components/HeaderTabs';
 import SearchBar from '../components/SearchBar';
 import Categories from '../components/Categories';
 import RestaurantItems from '../components/RestaurantItems';
 import { localRestaurants } from '../jsonDatas/resto';
+import { yelpApiKey } from '../config';
 
-const YELP_API_KEY = "bdRJutLhFAQJ36t7b89CWjHFBU4OKzjt9wvZzcY-nkgmvTqlNMjZWV1eG7iBQ9R74SyfxRg9LWnBAkZY06BtAZAe4d2dfX-2vuX8a1l5V7foctHfX9UKEyoM5ts3YXYx";
 
 const Home = () => {
+  const YELP_API_KEY = yelpApiKey;
   const [restoData, setRestoData] = useState(localRestaurants);
   const [city, setCity] = useState("San Francisco");
 
-  const getRestoFromYelp = () => {
-    const yelpUrl = `https://api.yelp.com/v3/businesses/search?term=restaurants&location=sanDiego`; //${city}
+  const getRestoFromYelp = async () => {
+    const yelpUrl = `https://api.yelp.com/v3/businesses/search?term=restaurants&location=${city}`;
 
     const apiOptions = {
       headers: {
         Authorization: `Bearer ${YELP_API_KEY}`,
       },
     }
-    return fetch(yelpUrl, apiOptions).then(
-      res => res.json())
-      .then(json => setRestoData(json.businesses));
+    try{
+      return await fetch(yelpUrl, apiOptions).then(res => res.json())
+            .then(json => setRestoData(json.businesses));    
+    }catch(e){
+      return e.message;
+    }
   }
+
+  useEffect(() => {
+    getRestoFromYelp();
+  }, [])
 
   return (
     <SafeAreaView style={styles.safeArea}>
