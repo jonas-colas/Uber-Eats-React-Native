@@ -1,15 +1,22 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
+import BouncyCheckbox from 'react-native-bouncy-checkbox';
 import { Divider } from 'react-native-elements';
 
-const MenuItems = ({food}) => {
+const MenuItems = ({food}) => { //, marginLeft
+
+  const marginLeft = -25;
 
   return (
-    <View style={styles.wrapper}>
+    <View>
       <>
         <View style={styles.menuItems}>
+          <BouncyCheckbox fillColor='green'
+            iconStyle={{borderColor: 'lightgray', borderRadius: 0}}
+          />
           <FoodInfo food={food} />
-          <FoodImage image={food.image} />
+          <FoodImage image={food.image} 
+            marginLeft={marginLeft ? marginLeft : 0} />
         </View>
         <Divider width={0.5} orientation="vertical"
           style={{ borderBottomWidth: 1, marginHorizontal: 20 }}/>
@@ -20,8 +27,15 @@ const MenuItems = ({food}) => {
 
 export default MenuItems;
 
-const FoodImage = ({image}) => (
-  <Image source={{uri: image}} style={styles.foodImage} />
+const FoodImage = ({image, marginLeft}) => (
+  <Image source={{uri: image}} 
+    style={{
+      width: 100, 
+      height : 100,
+      borderRadius: 8,
+      marginLeft: marginLeft,
+    }} 
+  />
 );
 
 const FoodInfo = (props) => (
@@ -33,18 +47,11 @@ const FoodInfo = (props) => (
 );
 
 const styles = StyleSheet.create({
-  wrapper:{
-    borderRadius: 20,
-  },
+  
   menuItems:{
     flexDirection: 'row',
     justifyContent: 'space-between',
     margin: 20,
-  },
-  foodImage: {
-    width: 100, 
-    height : 100,
-    borderRadius: 8,
   },
   foodInfo: {
     width: 240,

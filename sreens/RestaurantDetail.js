@@ -3,6 +3,7 @@ import { View, Text, ScrollView } from 'react-native';
 import { Divider } from 'react-native-elements';
 import About from '../components/restaurantDetail/About';
 import MenuItems from '../components/restaurantDetail/MenuItems';
+import ViewCart from '../components/restaurantDetail/ViewCart';
 import { foods } from '../jsonDatas/menu';
 
 // const info = {
@@ -12,22 +13,21 @@ import { foods } from '../jsonDatas/menu';
 // }; 
 
 
-const RestaurantDetail = ({route}) => {
-
+const RestaurantDetail = ({route, navigation}) => {
   // const {name, image, reviews, rating, categories } = route.params;
-
-  console.log(route.params);
 
   return (
     <View>
       <About params={route.params} />
-      {/* info={yelpResto} */}
       <Divider width={1.8} style={{marginVertical: 20}} />
       <ScrollView showsVerticalScrollIndicator={false}>
         {foods.map((food, index) => (
           <MenuItems food={food} key={index} /> 
         ))}
       </ScrollView>
+      <ViewCart navigation={navigation} 
+        restaurantname={route.params.name}
+      />
     </View>
   );
 };
