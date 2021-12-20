@@ -5,7 +5,7 @@ import { Divider } from 'react-native-elements';
 const MenuItems = ({food}) => {
 
   return (
-    <View>
+    <View style={styles.wrapper}>
       <>
         <View style={styles.menuItems}>
           <FoodInfo food={food} />
@@ -33,6 +33,9 @@ const FoodInfo = (props) => (
 );
 
 const styles = StyleSheet.create({
+  wrapper:{
+    borderRadius: 20,
+  },
   menuItems:{
     flexDirection: 'row',
     justifyContent: 'space-between',

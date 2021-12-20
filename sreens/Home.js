@@ -10,10 +10,9 @@ import { localRestaurants } from '../jsonDatas/resto';
 import { yelpApiKey } from '../config';
 
 
-const Home = () => {
+const Home = ({navigation}) => {
   const [restoData, setRestoData] = useState(localRestaurants);
-  const [city, setCity] = useState("San Francisco");
-  // const [city, setCity] = useState("Miami");
+  const [city, setCity] = useState("SanDiego");
   const [activeTab, setActiveTab] = useState("Delivery");
 
   const getRestoFromYelp = async () => {
@@ -47,7 +46,10 @@ const Home = () => {
       </View>
       <ScrollView showsVerticalScrollIndicator={false}>
         <Categories/>
-        <RestaurantItems restaurantData={restoData} />
+        <RestaurantItems 
+          restaurantData={restoData} 
+          navigation={navigation} 
+        />
       </ScrollView>
       <Divider width={1} />
       <BottomTabs />

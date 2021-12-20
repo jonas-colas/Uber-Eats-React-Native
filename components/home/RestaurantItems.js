@@ -3,17 +3,29 @@ import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 
 
-const RestaurantItems = ({restaurantData}) => {
+const RestaurantItems = ({navigation, restaurantData}) => {
 
   return (
-    <TouchableOpacity activeOpacity={1} style={styles.touchable_1}>
+    <>
       {restaurantData?.map((item, i) => (
-        <View style={styles.RestaurantItems} key={i} >
-          <RestaurantImage img={item.image_url} />
-          <RestaurantInfo name={item.name} rating={item.rating} />
-        </View>
+        <TouchableOpacity activeOpacity={1} 
+          style={styles.touchable_1}  key={i}
+          onPress={() => navigation.navigate("RestaurantDetail", {
+            name: item.name,
+            image: item.image_url,
+            reviews: item.review_count,
+            rating: item.rating,
+            categories: item.categories
+          })
+        }
+        >
+          <View style={styles.RestaurantItems} >
+            <RestaurantImage img={item.image_url} />
+            <RestaurantInfo name={item.name} rating={item.rating} />
+          </View>
+        </TouchableOpacity>
       ))}
-    </TouchableOpacity>
+    </>
   )
 }
 
@@ -47,7 +59,7 @@ const RestaurantInfo = ({name, rating}) => (
 
 const styles = StyleSheet.create({
   touchable_1:{
-    marginBottom: 30,
+    // marginBottom: 30,
   },
   RestaurantItems: {
     marginTop: 10,

@@ -1,12 +1,35 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
 
-const About = ({info}) => {
+// const yelpResto = {
+//   name: 'Farmhouse Kitchen Thai Cuisine',
+//   image: "https://thestayathomechef.com/wp-content/uploads/2017/08/Most-Amazing-Lasagna-2-e1574792735811.jpg",
+//   price: '$$',
+//   reviews: 1500,
+//   rating: 4.5,
+//   categories: [
+//     {title: 'Thai'}, 
+//     {title: 'Comfort Food'}, 
+//     {title: 'Coffee'},
+//     {title: 'Ice Cream'},
+//     {title: 'Snacks'},
+//   ],
+// };
+// const {name, image, price, reviews, rating, categories} = yelpResto;
+
+
+const About = ({params}) => {
+  const {name, image, reviews, rating, categories } = params;
+  const price = '$$';
+  const formattedCategories = categories.map(cat => cat.title).join(" . ");
+  
+  const description = `${formattedCategories} ${price ? " . " + price : ""} · 🎫 · ${rating} ⭐ (${reviews}+)`;
+
   return (
     <View>
-      <RestoImage image={info.image} />
-      <RestoTitle title={info.title} />
-      <RestoDescription desc={info.description} />
+      <RestoImage image={image} />
+      <RestoTitle title={name} />
+      <RestoDescription desc={description} />
     </View>
   );
 };
