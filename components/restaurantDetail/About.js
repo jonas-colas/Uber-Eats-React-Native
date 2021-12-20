@@ -28,7 +28,7 @@ const About = ({params}) => {
   return (
     <View>
       <RestoImage image={image} />
-      <RestoTitle title={name} />
+      <RestoName name={name} />
       <RestoDescription desc={description} />
     </View>
   );
@@ -41,8 +41,8 @@ const RestoImage = (props) => (
     style={{width: '100%', height: 180}} />
 );
 
-const RestoTitle = (props) => (
-  <Text style={styles.title}>{props.title}</Text>
+const RestoName = (props) => (
+  <Text style={styles.title}>{props.name}</Text>
 );
 
 const RestoDescription = (props) => (
