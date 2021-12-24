@@ -2,7 +2,8 @@ import React from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
 import { Divider } from 'react-native-elements';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+
 
 const MenuItems = ({restaurantName, food}) => { //, marginLeft
   const dispatch = useDispatch();
@@ -16,6 +17,14 @@ const MenuItems = ({restaurantName, food}) => { //, marginLeft
     }
   });
   
+  const cartItems = useSelector(
+    state => state.cartReducer.selectedItems.items
+  );
+
+  const isFoodInCart = (food, cartItems) => {
+    return Boolean(cartItems.find(item => item.title === food.title));
+  };
+  
   const marginLeft = -25;
 
   return (
@@ -25,6 +34,7 @@ const MenuItems = ({restaurantName, food}) => { //, marginLeft
           <BouncyCheckbox fillColor='green'
             iconStyle={{borderColor: 'lightgray', borderRadius: 0}}
             onPress={(checkboxValue) => selectedItem(food, checkboxValue)}
+            isChecked={isFoodInCart(food, cartItems)}
           />
           <FoodInfo food={food} />
           <FoodImage image={food.image} 
