@@ -21,16 +21,17 @@ const OrderSuccess = ({ route }) => {
   const cooking = require("../assets/animations/cooking.json");
 
   const db = firebase.firestore();
-  const unsubscribe = db.collection("orders")
-  .orderBy('createdAt', 'desc').limit(1)
-  .onSnapshot(snapshot => {
-    snapshot.docs.map(doc => {
-      setLastOrder(doc.data());
-    })
-  })
 
+  
   useEffect(() => {
-    unsubscribe();
+    const unsubscribe = db.collection("orders")
+    .orderBy('createdAt', 'desc').limit(1)
+    .onSnapshot(snapshot => {
+      snapshot.docs.map(doc => {
+        setLastOrder(doc.data());
+      })
+    })
+    return unsubscribe();
   }, []);
 
   return (
@@ -71,7 +72,8 @@ export default OrderSuccess;
 
 const styles = StyleSheet.create({
   safe:{
-    flex: 1,
+    // flex: 1,
+    height: '100%',
     backgroundColor: 'white',
   },
   container: {

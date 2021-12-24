@@ -4,10 +4,13 @@ import { View, Text, StyleSheet,
 import { useSelector } from 'react-redux';
 import OrderItem from './OrderItem';
 import firebase from "../../firebase";
+import Loader from '../Loader';
+
 
 
 const ViewCart = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const {items, restaurantName} = useSelector(
     state => state.cartReducer.selectedItems
@@ -23,72 +26,84 @@ const ViewCart = ({ navigation }) => {
   })
 
   const addOrderToFirebase = async () => {
+    
     const db = firebase.firestore();
     await db.collection("orders").add({
       items: items,
       restaurantName: restaurantName,
       createAt: firebase.firestore.FieldValue.serverTimestamp(),
+    }).then(() => {
+      setTimeout(() => { 
+        setIsLoading(false);
+        setModalVisible(false);
+      }, 4500);
     });
-    setModalVisible(false);
     navigation.navigate("OrderSuccess", {
       restaurantName, totalUSD
     });
   };
 
   const checkoutModalContent = () => (
-    <>
-      <View style={styles.modalContainer}>
-        <View style={styles.modalCheckoutContainer}>
-          <Text style={styles.restaurantName}>
-            {restaurantName}
-          </Text>
-          {items?.map((item, i) => (
-            <OrderItem key={i} item={item} />
-          ))}
-          <View style={styles.subtotalContainer}>
-            <Text style={styles.subtotalText}>Subtotal</Text>
-            <Text> {totalUSD} </Text>
-          </View>
-          <View style={styles.buttonCheckout}>
-            <TouchableOpacity 
-              onPress={() => addOrderToFirebase()}
-              style={styles.touch}
-            >
-              <Text style={styles.textCheckout}> Checkout </Text>
-              <Text style={styles.total}> 
-                {total ? totalUSD : ""}
-              </Text>
-            </TouchableOpacity>
-          </View>
+    <View style={styles.modalContainer}>
+      <View style={styles.modalCheckoutContainer}>
+        <Text style={styles.restaurantName}>
+          {restaurantName}
+        </Text>
+        {items?.map((item, i) => (
+          <OrderItem key={i} item={item} />
+        ))}
+        <View style={styles.subtotalContainer}>
+          <Text style={styles.subtotalText}>Subtotal</Text>
+          <Text> {totalUSD} </Text>
+        </View>
+        <View style={styles.buttonCheckout}>
+          <TouchableOpacity 
+            onPress={() => {
+              setIsLoading(true);
+              addOrderToFirebase();
+            }}
+            style={styles.touch}
+          >
+            <Text style={styles.textCheckout}> Checkout </Text>
+            <Text style={styles.total}> 
+              {total ? totalUSD : ""}
+            </Text>
+          </TouchableOpacity>
         </View>
       </View>
-    </>
+    </View>
   );
 
   return (
     <>
-    <Modal 
-      animationType="slide" 
-      visible={modalVisible} 
-      transparent={true} 
-      onRequestClose={() => setModalVisible(false)}
-    >
-      {checkoutModalContent()}
-    </Modal>
-    {total ? (
-      <View style={styles.container}>
-        <View style={styles.view}>
-          <TouchableOpacity 
-            style={styles.touchable}
-            onPress={() => setModalVisible(true)}
-          >
-            <Text style={styles.text}>View Cart</Text>
-            <Text style={styles.text}>{totalUSD}</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
+    {isLoading ? (
+      <Loader />
     ) : (
-      <></>
+      <>
+        <Modal 
+          animationType="slide" 
+          visible={modalVisible} 
+          transparent={true} 
+          onRequestClose={() => setModalVisible(false)}
+        >
+          {checkoutModalContent()}
+        </Modal>
+        {total ? (
+          <View style={styles.container}>
+            <View style={styles.view}>
+              <TouchableOpacity 
+                style={styles.touchable}
+                onPress={() => setModalVisible(true)}
+              >
+                <Text style={styles.text}>View Cart</Text>
+                <Text style={styles.text}>{totalUSD}</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        ) : (
+          <></>
+        )}
+      </>
     )}
     </>
   );

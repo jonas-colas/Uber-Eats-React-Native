@@ -52,8 +52,8 @@ export default MenuItems;
 const FoodImage = ({image, marginLeft}) => (
   <Image source={{uri: image}} 
     style={{
-      width: 100, 
-      height : 100,
+      width: 80, 
+      height : 80,
       borderRadius: 8,
       marginLeft: marginLeft,
     }} 
