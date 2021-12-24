@@ -40,8 +40,9 @@ const ViewCart = () => {
               onPress={() => setModalVisible(false)}
               style={styles.touch}
             >
-              <Text style={styles.textCheckout}>
-                Checkout
+              <Text style={styles.textCheckout}> Checkout </Text>
+              <Text style={styles.total}> 
+                {total ? totalUSD : ""}
               </Text>
             </TouchableOpacity>
           </View>
@@ -155,5 +156,12 @@ const styles = StyleSheet.create({
   textCheckout:{
     fontSize: 20,
     color: 'white',
+  },
+  total:{
+    position: "absolute",
+    right: 20,
+    color: 'white',
+    fontSize: 15,
+    top: 17,
   },
 });
