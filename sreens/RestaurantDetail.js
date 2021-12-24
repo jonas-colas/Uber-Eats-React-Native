@@ -26,6 +26,8 @@ const RestaurantDetail = ({route, navigation}) => {
             restaurantName={route.params.name} 
             food={food} 
             key={index} 
+            marginLeft={-25}
+            // hideCheckbox={false}
           /> 
         ))}
       </ScrollView>

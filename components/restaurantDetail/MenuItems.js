@@ -5,7 +5,7 @@ import { Divider } from 'react-native-elements';
 import { useDispatch, useSelector } from 'react-redux';
 
 
-const MenuItems = ({restaurantName, food}) => { //, marginLeft
+const MenuItems = ({restaurantName, food, hideCheckbox, marginLeft}) => { //, marginLeft
   const dispatch = useDispatch();
   
   const selectedItem = (item, checkboxValue) => dispatch({
@@ -25,17 +25,17 @@ const MenuItems = ({restaurantName, food}) => { //, marginLeft
     return Boolean(cartItems.find(item => item.title === food.title));
   };
   
-  const marginLeft = -25;
-
   return (
     <View>
       <>
         <View style={styles.menuItems}>
-          <BouncyCheckbox fillColor='green'
-            iconStyle={{borderColor: 'lightgray', borderRadius: 0}}
-            onPress={(checkboxValue) => selectedItem(food, checkboxValue)}
-            isChecked={isFoodInCart(food, cartItems)}
-          />
+          {hideCheckbox ? (<></>) : (
+            <BouncyCheckbox fillColor='green'
+              iconStyle={{borderColor: 'lightgray', borderRadius: 0}}
+              onPress={(checkboxValue) => selectedItem(food, checkboxValue)}
+              isChecked={isFoodInCart(food, cartItems)}
+            />
+          )}
           <FoodInfo food={food} />
           <FoodImage image={food.image} 
             marginLeft={marginLeft ? marginLeft : 0} />

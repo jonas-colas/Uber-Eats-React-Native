@@ -5,7 +5,8 @@ import { useSelector } from 'react-redux';
 import OrderItem from './OrderItem';
 import firebase from "../../firebase";
 
-const ViewCart = () => {
+
+const ViewCart = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
 
   const {items, restaurantName} = useSelector(
@@ -21,14 +22,17 @@ const ViewCart = () => {
     currency: "USD",
   })
 
-  const addOrderToFirebase = () => {
+  const addOrderToFirebase = async () => {
     const db = firebase.firestore();
-    db.collection("orders").add({
+    await db.collection("orders").add({
       items: items,
       restaurantName: restaurantName,
       createAt: firebase.firestore.FieldValue.serverTimestamp(),
     });
     setModalVisible(false);
+    navigation.navigate("OrderSuccess", {
+      restaurantName, totalUSD
+    });
   };
 
   const checkoutModalContent = () => (
