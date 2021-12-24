@@ -1,11 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, 
-  TouchableOpacity } from 'react-native';
+  TouchableOpacity, 
+  Modal} from 'react-native';
 import { useSelector } from 'react-redux';
+import OrderItem from './OrderItem';
 
 const ViewCart = () => {
-  const items = useSelector(
-    state => state.cartReducer.selectedItems.items
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const {items, restaurantName} = useSelector(
+    state => state.cartReducer.selectedItems
   );
 
   const total = items
@@ -17,14 +21,52 @@ const ViewCart = () => {
     currency: "USD",
   })
 
-  console.log(totalUSD);
+  const checkoutModalContent = () => (
+    <>
+      <View style={styles.modalContainer}>
+        <View style={styles.modalCheckoutContainer}>
+          <Text style={styles.restaurantName}>
+            {restaurantName}
+          </Text>
+          {items?.map((item, i) => (
+            <OrderItem key={i} item={item} />
+          ))}
+          <View style={styles.subtotalContainer}>
+            <Text style={styles.subtotalText}>Subtotal</Text>
+            <Text> {totalUSD} </Text>
+          </View>
+          <View style={styles.buttonCheckout}>
+            <TouchableOpacity 
+              onPress={() => setModalVisible(false)}
+              style={styles.touch}
+            >
+              <Text style={styles.textCheckout}>
+                Checkout
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </View>
+    </>
+  );
 
   return (
     <>
+    <Modal 
+      animationType="slide" 
+      visible={modalVisible} 
+      transparent={true} 
+      onRequestClose={() => setModalVisible(false)}
+    >
+      {checkoutModalContent()}
+    </Modal>
     {total ? (
       <View style={styles.container}>
         <View style={styles.view}>
-          <TouchableOpacity style={styles.touchable}>
+          <TouchableOpacity 
+            style={styles.touchable}
+            onPress={() => setModalVisible(true)}
+          >
             <Text style={styles.text}>View Cart</Text>
             <Text style={styles.text}>{totalUSD}</Text>
           </TouchableOpacity>
@@ -68,5 +110,50 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 20,
     marginRight: 30,
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    backgroundColor: "rgba(0, 0, 0, 0.7)",
+  },
+  modalCheckoutContainer: {
+    backgroundColor: "white",
+    padding: 16,
+    height: 500,
+    borderWidth: 1,
+  },
+  restaurantName: {
+    textAlign: "center",
+    fontWeight: "600",
+    fontSize: 18,
+    marginBottom: 10,
+  },
+  subtotalContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 15,
+  },
+  subtotalText: {
+    textAlign: "left",
+    fontWeight: "600",
+    fontSize: 15,
+    marginBottom: 10,
+  },
+  buttonCheckout: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  touch:{
+    marginTop: 20,
+    backgroundColor: 'black',
+    alignItems: 'center',
+    padding: 13,
+    borderRadius: 30,
+    width: 300,
+    position: "relative",
+  },
+  textCheckout:{
+    fontSize: 20,
+    color: 'white',
   },
 });
